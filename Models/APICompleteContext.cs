@@ -25,7 +25,7 @@ namespace API_Complete_ASP.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS02;Database=API-Complete;Trusted_Connection=True;");
             }
         }
@@ -105,7 +105,7 @@ namespace API_Complete_ASP.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.IdUser)
-                    .HasName("PK__Users__ED4DE442365549C6");
+                    .HasName("PK__Users__ED4DE442F763962C");
 
                 entity.Property(e => e.IdUser).HasColumnName("ID_User");
 
@@ -113,12 +113,12 @@ namespace API_Complete_ASP.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(100)
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Users)
-                    .HasMaxLength(50)
+                entity.Property(e => e.Password)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
             });
 

@@ -27,6 +27,13 @@ namespace API_Complete_ASP.Database.Services
             return _context.Users.FirstOrDefault(u => u.Password == password);
         }
 
+        public User Create(User user)
+        {
+            _context.Users.Add(user);
+            user.IdUser = _context.SaveChanges();
+
+            return user;
+        }
 
     }
 }

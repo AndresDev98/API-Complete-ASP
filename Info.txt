@@ -17,16 +17,17 @@
 
 
 
-###	SCRIPTS DATABASE
 
+
+###	SCRIPTS DATABASE
 
 
 CREATE TABLE Users
    (
 		ID_User int IDENTITY(1,1) PRIMARY KEY,
-		Users varchar(50),
-		Email varchar(100),
-		Password varchar(100)
+		Name varchar(50) NOT NULL,
+		Email varchar(100) NOT NULL,
+		Password varchar(100) NOT NULL
    )
 
 CREATE TABLE DataUser
@@ -50,14 +51,6 @@ CREATE TABLE Contact
    )
 
 
-   CREATE TABLE Users
-   (
-		ID_UserPass int IDENTITY(1,1) PRIMARY KEY,
-		Password varchar(100)
-		ConfirPassword varchar(100)
-   )
-
-
    CREATE TABLE ResetPass
    (
 		ID_UserPass int IDENTITY(1,1) PRIMARY KEY,
@@ -65,3 +58,52 @@ CREATE TABLE Contact
 		ConfirmPassword varchar(100)
    )
 
+
+
+
+
+
+
+
+
+
+
+
+INFO DE METODOS:
+
+Metodo Login antes de aplicar autentificación:
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            User userEmail = _repo.GetByEmail(dto.Email);
+            User userPass = _repo.GetByPass(dto.Password);
+
+            if (userEmail == null)
+            {
+                ViewData["MENSAJE"] = "Email Incorrecto";
+                return View();
+            }
+            else if (!userEmail.Email.Equals(dto.Email))
+            {
+                ViewData["MENSAJE"] = "Contraseña Incorrecta";
+                return View();
+            }
+            else
+            {
+                if (userEmail.Email.Equals(dto.Email) && (userPass.Password.Equals(dto.Password)))
+                {
+                    ViewData["MENSAJE"] = "Login Correcto";
+                    return RedirectToAction("Index", "Users");
+                }
+                else
+                {
+                    ViewData["MENSAJE"] = "Login Incorrecto";
+                    return RedirectToAction("Login", "Users");
+                }
+
+
+            }
+
+        }

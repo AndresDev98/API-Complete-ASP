@@ -15,6 +15,10 @@ using System.Net;
 using API_Complete_ASP.Models.Dtos;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace API_Complete_ASP.Controllers
 {
@@ -32,7 +36,8 @@ namespace API_Complete_ASP.Controllers
             _repo = repo;
         }
 
-        // GET: Users
+
+        // OBTENER LISTA DE USUARIOS ------------------------------------------------------------------------------- //
         public async Task<IActionResult> Index()
         {
               return _context.Users != null ? 
@@ -40,7 +45,8 @@ namespace API_Complete_ASP.Controllers
                           Problem("Entity set 'APICompleteContext.Users'  is null.");
         }
 
-        // GET: Users/Details/5
+
+        // DETALLE DE LOS DATOS DE USUARIOS ------------------------------------------------------------------------------- //
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Users == null)
@@ -58,48 +64,63 @@ namespace API_Complete_ASP.Controllers
             return View(user);
         }
 
+
+        // LOGIN ------------------------------------------------------------------------------- //
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            User userEmail = _repo.GetByEmail(dto.Email);
-            User userPass = _repo.GetByPass(dto.Password);
-
-            if (userEmail == null)
+            User usuario = _repo.GetByEmail(dto.Email);
+            if (usuario == null)
             {
+
                 ViewData["MENSAJE"] = "Email Incorrecto";
                 return View();
+
             }
-            else if (!userEmail.Email.Equals(dto.Email))
+            else if (!BCrypt.Net.BCrypt.Verify(dto.Password, usuario.Password))
             {
+
                 ViewData["MENSAJE"] = "Contraseña Incorrecta";
                 return View();
+
             }
             else
             {
-                if (userEmail.Email.Equals(dto.Email) && (userPass.Password.Equals(dto.Password)))
-                {
-                    ViewData["MENSAJE"] = "Login Correcto";
-                    return RedirectToAction("Index", "Users");
-                }
-                else
-                {
-                    ViewData["MENSAJE"] = "Login Incorrecto";
-                    return RedirectToAction("Login", "Users");
-                }
+                ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Email);
+                Claim claimUserName = new Claim(ClaimTypes.Name, usuario.Name);
+                Claim claimEmail = new Claim(ClaimTypes.Email, usuario.Email);
+                Claim claimIdUsuario = new Claim("Id", usuario.IdUser.ToString());
 
+                identity.AddClaim(claimUserName);
+                identity.AddClaim(claimIdUsuario);
+                identity.AddClaim(claimEmail);
 
+                ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.Now.AddMinutes(5)
+                });
+
+                return RedirectToAction("Index", "Users");
             }
-
-            //return View(userEmail);
         }
 
 
+        // CIERRE SESIÓN ------------------------------------------------------------------------------- //
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Response.Cookies.Delete("jwt");
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        // REGISTRO ------------------------------------------------------------------------------- //
         public IActionResult Register()
         {
             return View();
@@ -107,18 +128,30 @@ namespace API_Complete_ASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("IdUser,Users,Email,Password")] User user)
+        public async Task<IActionResult> Register(RegisterDto dto)
         {
-            if (ModelState.IsValid)
+            var user = new User
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Name = dto.Name,
+                Email = dto.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+
+
+            };
+            if (user != null)
+            {
+                return RedirectToAction("Login", "Users", _repo.Create(user));
             }
-            return View(user);
+            else
+            {
+
+                ViewData["MENSAJE"] = "Usuario o contraseña incorrectos";
+                return RedirectToAction("Register", "Users");
+            }
         }
 
-        // GET: Users/Edit/5
+
+        // EDITAR INFO USUARIO ------------------------------------------------------------------------------- //
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Users == null)
@@ -167,7 +200,8 @@ namespace API_Complete_ASP.Controllers
             return View(user);
         }
 
-        // GET: Users/Delete/5
+
+        // BORRAR USUARIO ------------------------------------------------------------------------------- //
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Users == null)
@@ -184,8 +218,8 @@ namespace API_Complete_ASP.Controllers
 
             return View(user);
         }
+ 
 
-        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -204,6 +238,8 @@ namespace API_Complete_ASP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        // MIRAR SI EXISTE USUARIO ------------------------------------------------------------------------------- //
         private bool UserExists(int id)
         {
           return (_context.Users?.Any(e => e.IdUser == id)).GetValueOrDefault();
@@ -211,7 +247,7 @@ namespace API_Complete_ASP.Controllers
 
 
 
-        //
+        // ENVIO DE PASSWORD POR CORREO ------------------------------------------------------------------------------- //
         public IActionResult ResetPass()
         {
             return View();
@@ -266,12 +302,11 @@ namespace API_Complete_ASP.Controllers
                     ViewData["MENSAJE"] = "Login Incorrecto";
                     return RedirectToAction("Login", "Users");
                 }
-
-
             }
         }
 
 
+        // NUEVA CONTRASEÑA ------------------------------------------------------------------------------- //
         public IActionResult NewPassword()
         {
             return View();
@@ -282,8 +317,7 @@ namespace API_Complete_ASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewPassword(User user,NewPassword dto)
         {
-            User userEmail = _repo.GetByEmail(dto.Email);
-           
+            User userEmail = _repo.GetByEmail(dto.Email);           
 
             if (userEmail == null)
             {
@@ -300,11 +334,9 @@ namespace API_Complete_ASP.Controllers
                 if (userEmail.Email.Equals(dto.Email))
                 {
 
-                    // UserEmail tiene todos los parametros okey
-
                     var dni = new User()
                     {
-                        Users = userEmail.Users,
+                        Name = userEmail.Name,
                         Email = userEmail.Email,
                         Password = dto.Password
 
@@ -320,10 +352,10 @@ namespace API_Complete_ASP.Controllers
 
                 }
             }
-
             return View();
-
         }
-        //
+
+
+        // FIN ------------------------------------------------------------------------------- //
     }
 }
