@@ -1,0 +1,67 @@
+﻿
+
+### CONEXIÓN CON BASE DE DATOS
+
+
+	## BASE DE DATOS
+
+	- Con este comando, se te va a hacer una clase por cada tabla que tengas en la bbdd
+	Scaffold-DbContext "Server=localhost\SQLEXPRESS02;Database=API-Complete;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+
+	## BASE DE DATOS CAMBIOS.
+
+	- ¿ Y SI CAMBIA LA BBDD O SE ACTUALIZA ?
+	Scaffold-DbContext "Server=localhost\SQLEXPRESS02;Database=API-Complete;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
+
+
+
+###	SCRIPTS DATABASE
+
+
+
+CREATE TABLE Users
+   (
+		ID_User int IDENTITY(1,1) PRIMARY KEY,
+		Users varchar(50),
+		Email varchar(100),
+		Password varchar(100)
+   )
+
+CREATE TABLE DataUser
+   (
+		ID_Data int IDENTITY(1,1) PRIMARY KEY,
+		Name varchar(50),
+		LastName varchar(50),
+		Age int,
+		Phone int,
+		Country varchar(25),
+		City varchar(25),
+		Genero varchar(25)
+   )
+
+CREATE TABLE Contact
+   (
+		ID_Contact int IDENTITY(1,1) PRIMARY KEY,
+		Title varchar(50),
+		Reference varchar(50),
+		Description varchar(200)
+   )
+
+
+   CREATE TABLE Users
+   (
+		ID_UserPass int IDENTITY(1,1) PRIMARY KEY,
+		Password varchar(100)
+		ConfirPassword varchar(100)
+   )
+
+
+   CREATE TABLE ResetPass
+   (
+		ID_UserPass int IDENTITY(1,1) PRIMARY KEY,
+		Password varchar(100),
+		ConfirmPassword varchar(100)
+   )
+
