@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Complete_ASP.Models;
-using API_Complete_ASP.Database;
-using Humanizer;
-using NuGet.Protocol.Core.Types;
 using API_Complete_ASP.Database.Services;
 using System.Net.Mail;
 using System.Net;
 using API_Complete_ASP.Models.Dtos;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
@@ -116,7 +105,7 @@ namespace API_Complete_ASP.Controllers
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Response.Cookies.Delete("jwt");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Users");
         }
 
 
@@ -355,6 +344,38 @@ namespace API_Complete_ASP.Controllers
             return View();
         }
 
+
+        // CONTACTAME ---------------------------------------------------------------------------------- //
+        public IActionResult Contacto()
+        {
+            return View();
+        }
+
+        //Si mas adelante quiero que me llegue a mi correo deberia de hacer como en ResetPass
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contacto(Contact contact)
+        {
+            var Data = new Contact
+            {
+                Name = contact.Name,
+                Email = contact.Email,
+                Reference = contact.Reference,
+                Description = contact.Description
+
+
+            };
+            if (Data != null)
+            {
+                return RedirectToAction("Login", "Users", _repo.Create(Data));
+            }
+            else
+            {
+
+                ViewData["MENSAJE"] = "Usuario o contraseña incorrectos";
+                return RedirectToAction("Login", "Users");
+            }
+        }
 
         // FIN ------------------------------------------------------------------------------- //
     }

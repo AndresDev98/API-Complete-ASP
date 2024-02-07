@@ -45,7 +45,8 @@ CREATE TABLE DataUser
 CREATE TABLE Contact
    (
 		ID_Contact int IDENTITY(1,1) PRIMARY KEY,
-		Title varchar(50),
+		Name varchar(50),
+        Email varchar(100) NOT NULL,
 		Reference varchar(50),
 		Description varchar(200)
    )

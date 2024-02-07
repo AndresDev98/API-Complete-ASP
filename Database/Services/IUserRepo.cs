@@ -1,5 +1,4 @@
 ﻿using API_Complete_ASP.Models;
-using API_Complete_ASP.Models.Dtos;
 
 namespace API_Complete_ASP.Database.Services
 {
@@ -8,5 +7,7 @@ namespace API_Complete_ASP.Database.Services
         User Create(User user);
         User GetByEmail(string email); 
         User GetById(int? id);
+
+        Contact Create(Contact contact);
     }
 }

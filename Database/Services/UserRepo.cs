@@ -1,5 +1,4 @@
 ﻿using API_Complete_ASP.Models;
-using API_Complete_ASP.Models.Dtos;
 
 namespace API_Complete_ASP.Database.Services
 {
@@ -10,6 +9,15 @@ namespace API_Complete_ASP.Database.Services
         public UserRepo(APICompleteContext context)
         {
             _context = context;
+        }
+
+        // USUARIO ---------------------------------------------------------------------------------- //
+        public User Create(User user)
+        {
+            _context.Users.Add(user);
+            user.IdUser = _context.SaveChanges();
+
+            return user;
         }
 
         public User GetByEmail(string email)
@@ -27,12 +35,14 @@ namespace API_Complete_ASP.Database.Services
             return _context.Users.FirstOrDefault(u => u.Password == password);
         }
 
-        public User Create(User user)
-        {
-            _context.Users.Add(user);
-            user.IdUser = _context.SaveChanges();
 
-            return user;
+        // CONTACTO ---------------------------------------------------------------------------------- //
+        public Contact Create(Contact contact)
+        {
+            _context.Contacts.Add(contact);
+            contact.IdContact = _context.SaveChanges();
+
+            return contact;
         }
 
     }

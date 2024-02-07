@@ -19,22 +19,47 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Ver User</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
-                        </li> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="ResetPass">Change Pass</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Contacto">Contact</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="NewPassword">New Pass</a>
-                        </li>
+
+                        @if (Context.User.Identity.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Ver User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="ResetPass">Change Pass</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="NewPassword">New Pass</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Contacto">Contact</a>
+                            </li>
+                        }
+                        else
+                        {
+                            // Si es true no tiene que mostrar nada mas que contacto
+                        }
+
+                        
                     </ul>
+
+                    <partial name="_MenuLogIn" />
+                        @if (Context.User.Identity.IsAuthenticated == true)
+                        {
+                            // Si es true no tiene que mostrar la pestaña de registro
+                        }
+                        else
+                        {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
+                        }
+
                 </div>
             </div>
         </nav>
@@ -56,3 +81,27 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+
+
+
+@*<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Ver User</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="ResetPass">Change Pass</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="NewPassword">New Pass</a>
+        </li>
+    </ul>
+</div>*@
