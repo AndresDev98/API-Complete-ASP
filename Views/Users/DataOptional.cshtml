@@ -1,4 +1,4 @@
-﻿@model API_Complete_ASP.Models.Contact
+﻿@model API_Complete_ASP.Models.DataUser
 
 @{
     ViewData["Title"] = "Contact";
@@ -29,30 +29,47 @@
                     </div>
                     <div class="col-md-6">
 
-                        <form asp-controller="Users" asp-action="Contacto" class="mb-5" method="post" id="contactForm" name="contactForm">
+                        <form asp-controller="Users" asp-action="DataOptional" class="mb-5" method="post" id="contactForm" name="contactForm">
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <input asp-for="Name" type="text" class="form-control" name="name" id="name" placeholder="Your name">
+                                    <input asp-for="Name" type="text" class="form-control" name="Name" id="name" placeholder="Your name">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <input asp-for="Email" type="text" class="form-control" name="email" id="email" placeholder="Email">
+                                    <input asp-for="LastName" type="text" class="form-control" name="LastName" id="lastName" placeholder="LastName">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <input asp-for="Reference" type="text" class="form-control" name="Reference" id="subject" placeholder="Subject">
+                                    <input asp-for="Age" type="text" class="form-control" name="Age" id="subject" placeholder="Age">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <textarea asp-for="Description" class="form-control" name="Description" id="message" cols="30" rows="7" placeholder="Write your message"></textarea>
+                                    <textarea asp-for="Phone" class="form-control" name="Phone" id="message" cols="30" rows="7" placeholder="Phone"></textarea>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <input asp-for="Country" type="text" class="form-control" name="Country" id="email" placeholder="Country">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <input asp-for="City" type="text" class="form-control" name="City" id="subject" placeholder="City">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <textarea asp-for="Genero" class="form-control" name="Genero" id="message" cols="30" rows="7" placeholder="Genero"></textarea>
+                                </div>
+                            </div>
+
+
                             <div class="row">
                                 <div class="col-12">
-                                    <input type="submit" value="Send Message" class="btn btn-primary rounded-0 py-2 px-4">
+                                    <input type="submit" value="Agregar Datos" class="btn btn-primary rounded-0 py-2 px-4">
                                     <span class="submitting"></span>
                                 </div>
                             </div>

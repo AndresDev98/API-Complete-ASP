@@ -9,5 +9,7 @@ namespace API_Complete_ASP.Database.Services
         User GetById(int? id);
 
         Contact Create(Contact contact);
+
+        DataUser Create(DataUser user);
     }
 }

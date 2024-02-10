@@ -63,6 +63,16 @@ CREATE TABLE Contact
 
 
 
+-- MEJORAS API
+Ya esta realizado el login y autentificacion y encriptado
+Ahora lo siguiente es hacer como un emoticono que al pulsar en el
+Se te redirija a una pagina que aparezcan esos datos de tu usuario.
+
+Y otros cuadraditos en blanco que sean datos opcionales y que esten relacionados solo
+con el usuario principal.
+
+-- DISEÑO
+Poco a poco ir implementando un diseño para las paginas actuales
 
 
 

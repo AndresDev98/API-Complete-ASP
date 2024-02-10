@@ -377,6 +377,41 @@ namespace API_Complete_ASP.Controllers
             }
         }
 
+
+        // DATOS OPCIONALES ---------------------------------------------------------------------------------- //
+        public IActionResult DataOptional()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DataOptional(DataUser dataUser)
+        {
+            var DataOptional = new DataUser
+            {
+                Name = dataUser.Name,
+                LastName = dataUser.LastName,
+                Age = dataUser.Age,
+                Phone = dataUser.Phone,
+                Country = dataUser.Country,
+                City = dataUser.City,
+                Genero = dataUser.Genero
+
+
+            };
+            if (DataOptional != null)
+            {
+                return RedirectToAction("Index", "Users", _repo.Create(DataOptional));
+            }
+            else
+            {
+
+                ViewData["MENSAJE"] = "Usuario o contraseña incorrectos";
+                return RedirectToAction("Login", "Users");
+            }
+        }
+
         // FIN ------------------------------------------------------------------------------- //
     }
 }

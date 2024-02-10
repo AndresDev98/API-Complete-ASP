@@ -4,22 +4,95 @@
     ViewData["Title"] = "Login";
 }
 
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/LoginStyle.css">
+<link rel="stylesheet" href="~/fonts/icomoon/style.css">
+<link rel="stylesheet" href="~/css/owl.carousel.min.css">
 
+<script src="~/js/LoginMain.js"></script> 
 
-<section class="vh-100" style="background-color: #9A616D;">
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="~/Imgs/undraw_remotely_2j6y.svg" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h3>Sign In</h3>
+                            <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p>
+                        </div>
+
+                        <form asp-controller="Users" asp-action="Login" method="post">
+
+                            <div class="form-group first">
+                                <input asp-for="Email" type="Email" class="form-control" id="username" placeholder="Email address" id="contactForm" name="contactForm" />
+                                @*<label asp-for="Email"></label>*@
+                            </div>
+
+                            <div class="form-group last mb-4">
+                                <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Password" />
+                                @*<label asp-for="Password">Password</label>*@
+                            </div> 
+
+                            <div class="d-flex mb-5 align-items-center">
+                                <label class="control control--checkbox mb-0">
+                                    <span class="caption">Remember me</span>
+                                    <input type="checkbox" checked="checked" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <span class="ml-auto">
+                                    <a class="forgot-pass" href="https://localhost:7165/Users/ResetPass">Forgot password?</a>                                    
+                                </span>
+                                
+                                
+                            </div>                            
+
+                            <input type="submit" value="Log In" class="btn btn-block btn-primary">
+
+                            <p style="color: #393f81;">
+                                Don't have an account? <a href="https://localhost:7165/Users/Register"
+                                                          style="color: #393f81;">Register here</a>
+                            </p>
+
+                            <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
+
+                            <div class="social-login">
+                                <a href="#" class="facebook">
+                                    <span class="icon-facebook mr-3"></span>
+                                </a>
+                                <a href="#" class="twitter">
+                                    <span class="icon-twitter mr-3"></span>
+                                </a>
+                                <a href="#" class="google">
+                                    <span class="icon-google mr-3"></span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<section class="vh-100" style="background-color: #9A616D;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
                 <div class="card" style="border-radius: 1rem;">
-                    <div class="row g-0">
+                    <div class="row g-0" "> 
                         <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+                            <img src="~/Imgs/undraw-contact.svg"
                                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
-
-                                @*<form asp-action="Login">*@
+                                
                                 <form asp-controller="Users" asp-action="Login" method="post">
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
@@ -59,4 +132,4 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@

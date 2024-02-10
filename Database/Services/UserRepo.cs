@@ -45,5 +45,14 @@ namespace API_Complete_ASP.Database.Services
             return contact;
         }
 
+        // DATOS OPCIONALES ---------------------------------------------------------------------------------- //
+
+        public DataUser Create(DataUser dataUser)
+        {
+            _context.DataUsers.Add(dataUser);
+            dataUser.IdData = _context.SaveChanges();
+
+            return dataUser;
+        }
     }
 }
